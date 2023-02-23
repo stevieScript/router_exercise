@@ -1,10 +1,10 @@
 const express = require("express")
 const router = new express.Router()
 const ExpressError = require("../expressError")
-const cart = require("../fakeDb")
+const items = require("../fakeDb")
 
 router.get("/", (req, res, next) => {
-    return res.json({cart})
+    return res.json({items})
 })
 
 router.post("/", (req, res, next) => {
@@ -13,7 +13,7 @@ router.post("/", (req, res, next) => {
             throw new ExpressError("Name and price are required", 400)
         }
         const newItem = {name: req.body.name, price: req.body.price}
-        cart.push(newItem)
+        items.push(newItem)
         return res.status(201).json({added: newItem})
     } catch(e) {
         return next(e)
@@ -22,7 +22,7 @@ router.post("/", (req, res, next) => {
 
 router.get("/:name", (req, res, next) => {
     try{
-        const foundItem = cart.find(item => item.name === req.params.name)
+        const foundItem = items.find(item => item.name === req.params.name)
     if (foundItem === undefined) {
         throw new ExpressError("Item not found", 404)
     }
@@ -34,7 +34,7 @@ router.get("/:name", (req, res, next) => {
 
 router.patch("/:name", (req, res, next) =>{
     try{
-        const foundItem = cart.find(item => item.name === req.params.name)
+        const foundItem = items.find(item => item.name === req.params.name)
     if (foundItem === undefined) {
         throw new ExpressError("Item not found", 404)
     }
@@ -48,12 +48,12 @@ router.patch("/:name", (req, res, next) =>{
 
 router.delete("/:name", (req, res, next) => {
     try{
-        const foundItem = cart.find(item => item.name === req.params.name)
+        const foundItem = items.find(item => item.name === req.params.name)
     if (foundItem === undefined) {
         throw new ExpressError("Item not found", 404)
     }
-    const index = cart.indexOf(foundItem)
-    cart.splice(index, 1)
+    const index = items.indexOf(foundItem)
+    items.splice(index, 1)
     return res.json({message: "Deleted"})
     } catch(e) {
         return next(e)

@@ -14,9 +14,9 @@ app.get("/favicon.ico", (req, res, next) => {
 
 
 
-// app.use((req, res, next) => {
-//     return new ExpressError("Not Found", 404);
-//   });
+app.use((req, res, next) => {
+    return new ExpressError("Not Found", 404);
+  });
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
